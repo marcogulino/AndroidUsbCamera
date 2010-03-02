@@ -10,4 +10,5 @@ qt4_automoc(${AndroidUsbCamera_SRCS})
 add_executable(AndroidUsbCamera ${AndroidUsbCamera_SRCS})
 target_link_libraries(AndroidUsbCamera -lavformat -lswscale ${QT_QTCORE_LIBRARY} ${QT_QTNETWORK_LIBRARY} )
 
-#add_subdirectory(test)
+add_subdirectory(test)
+ADD_TEST("Socket Connector Integration Test" "test/SocketConnectorIntegrationTest")
