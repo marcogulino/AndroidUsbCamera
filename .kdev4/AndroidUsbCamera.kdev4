@@ -3,9 +3,16 @@ BuildItems=@Variant(\x00\x00\x00\t\x00\x00\x00\x00\x01\x00\x00\x00\x0b\x00\x00\x
 
 [CMake]
 BuildDirs=/home/marco/Sviluppo/AndroidUsbCamera/build
-CMakeDir=/usr/share/cmake/Modules
+CMakeDir=/usr/share/cmake-2.6/Modules
 Current CMake Binary=file:///usr/bin/cmake
 CurrentBuildDir=file:///home/marco/Sviluppo/AndroidUsbCamera/build
 CurrentBuildType=debug
 CurrentInstallDir=file:///usr/
 ProjectRootRelative=./
+
+[Project]
+VersionControlSupport=kdevgit
+
+[Veritas]
+executables=/home/marco/Sviluppo/AndroidUsbCamera/build/test/SocketConnectorIntegrationTest
+framework=QTest
