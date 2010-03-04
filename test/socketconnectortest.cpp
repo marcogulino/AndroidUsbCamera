@@ -19,23 +19,12 @@
 */
 
 #include "socketconnectortest.h"
-#include <QtTest>
 #include "socketconnector.h"
 #include <QTcpSocket>
 
-#include <gmock/gmock.h>
+#include "android_usb_camera_test_base.h"
 
-QTEST_MAIN(SocketConnectorTest)
-using namespace testing;
-
-
-SocketConnectorTest::SocketConnectorTest() : QObject(0)
-{
-  GTEST_FLAG(throw_on_failure) = true;
-  int argc=QCoreApplication::argc();
-  char** argv=QCoreApplication::argv();
-  InitGoogleMock(&argc, argv);
-}
+GQTEST_MAIN(SocketConnectorTest)
 
 class MockSocket : public QTcpSocket {
   public:

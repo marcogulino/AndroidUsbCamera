@@ -27,9 +27,6 @@
 class SocketConnectorTest : public QObject
 {
 Q_OBJECT
-  public:
-    
-    SocketConnectorTest();
   private slots:
     void testFoo();
 };
