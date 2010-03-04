@@ -18,17 +18,20 @@
 
 */
 
-#ifndef SOCKETCONNECTORINTEGRATIONTEST_H
-#define SOCKETCONNECTORINTEGRATIONTEST_H
+#ifndef SOCKETCONNECTOR_H
+#define SOCKETCONNECTOR_H
 
 #include <qt4/QtCore/QObject>
+#include <QAbstractSocket>
 
-
-class SocketConnectorIntegrationTest : public QObject
+class SocketConnector : public QObject
 {
-Q_OBJECT
-  private slots:
-    void testFoo();
+  Q_OBJECT
+  public:
+    SocketConnector(QAbstractSocket *socket, QObject* parent = 0);
+    void openConnection();
+  private:
+    QAbstractSocket *socket;
 };
 
-#endif // SOCKETCONNECTORINTEGRATIONTEST_H
+#endif // SOCKETCONNECTOR_H

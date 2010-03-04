@@ -1,5 +1,5 @@
 #include "AndroidUsbCamera.h"
-#include "src/databridge.h"
+#include "databridge.h"
 #include <QTcpSocket>
 
 AndroidUsbCamera::AndroidUsbCamera()

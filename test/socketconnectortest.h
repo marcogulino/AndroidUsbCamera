@@ -18,18 +18,20 @@
 
 */
 
-#include "socketconnectorintegrationtest.h"
-#include <QtTest>
+#ifndef SOCKETCONNECTORINTEGRATIONTEST_H
+#define SOCKETCONNECTORINTEGRATIONTEST_H
+
+#include <qt4/QtCore/QObject>
 
 
-QTEST_MAIN(SocketConnectorIntegrationTest)
-
-
-
-void SocketConnectorIntegrationTest::testFoo()
+class SocketConnectorTest : public QObject
 {
-  QVERIFY("HELLO-" == "HELLO");
-}
+Q_OBJECT
+  public:
+    
+    SocketConnectorTest();
+  private slots:
+    void testFoo();
+};
 
-#include "socketconnectorintegrationtest.moc"
-
+#endif // SOCKETCONNECTORINTEGRATIONTEST_H
