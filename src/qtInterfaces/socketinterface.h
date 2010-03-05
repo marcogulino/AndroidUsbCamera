@@ -24,11 +24,11 @@
 #include <qt4/QtNetwork/QAbstractSocket>
 
 class AbstractSocketPrivate;
-class AbstractSocket : public QObject
+class SocketInterface : public QObject
 {
   Q_OBJECT
   public:
-    AbstractSocket(QAbstractSocket *socket, QObject *parent = 0);
+    SocketInterface(QAbstractSocket *socket, QObject *parent = 0);
     virtual void connectToHost(const QString &hostname, int port);
     virtual QByteArray readAll();
   private:

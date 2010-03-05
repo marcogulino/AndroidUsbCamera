@@ -1,5 +1,5 @@
 include_directories(${QT_INCLUDES} ${CMAKE_CURRENT_BINARY_DIR})
-set(qtInterfaces_SRCS abstractsocket.cpp )
+set(qtInterfaces_SRCS socketinterface.cpp )
 qt4_automoc(${qtInterfaces_SRCS})
 add_library( qtInterfaces_lib STATIC ${qtInterfaces_SRCS})
 target_link_libraries(qtInterfaces_lib ${QT_QTCORE_LIBRARY} ${QT_QTNETWORK_LIBRARY} )

@@ -22,19 +22,19 @@
 #define SOCKETCONNECTOR_H
 
 #include <qt4/QtCore/QObject>
-#include "qtInterfaces/abstractsocket.h"
+#include "qtInterfaces/socketinterface.h"
 #include "framesdataextractor.h"
 
 class SocketConnector : public QObject
 {
   Q_OBJECT
   public:
-    SocketConnector(AbstractSocket *socket, FramesDataExtractor *framesdataextractor , QObject* parent = 0);
+    SocketConnector(SocketInterface *socket, FramesDataExtractor *framesdataextractor , QObject* parent = 0);
     void openConnection();
   private slots:
     void gotData();
   private:
-    AbstractSocket *socket;
+    SocketInterface *socket;
     FramesDataExtractor *framesdataextractor;
 };
 

@@ -18,32 +18,32 @@
 
 */
 
-#include "abstractsocket.h"
+#include "socketinterface.h"
 
 
-AbstractSocket::AbstractSocket(QAbstractSocket* socket, QObject* parent): QObject(parent)
+SocketInterface::SocketInterface(QAbstractSocket* socket, QObject* parent): QObject(parent)
 {
   this->socket=socket;
   connectSignals();
 }
 
-void AbstractSocket::connectSignals()
+void SocketInterface::connectSignals()
 {
   connect(socket, SIGNAL(readyRead()), this, SIGNAL(readyRead()));
 }
 
 
-void AbstractSocket::connectToHost(const QString& hostname, int port)
+void SocketInterface::connectToHost(const QString& hostname, int port)
 {
   socket->connectToHost(hostname, port);
 }
 
-QByteArray AbstractSocket::readAll()
+QByteArray SocketInterface::readAll()
 {
   return socket->readAll();
 }
 
 
 
-#include "abstractsocket.moc"
+#include "socketinterface.moc"
 

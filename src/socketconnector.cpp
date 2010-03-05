@@ -21,7 +21,7 @@
 #include "socketconnector.h"
 
 
-SocketConnector::SocketConnector(AbstractSocket *socket, FramesDataExtractor *framesdataextractor , QObject* parent): QObject(parent)
+SocketConnector::SocketConnector(SocketInterface *socket, FramesDataExtractor *framesdataextractor , QObject* parent): QObject(parent)
 {
   this->socket=socket;
   this->framesdataextractor=framesdataextractor;
