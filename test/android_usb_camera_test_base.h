@@ -9,11 +9,21 @@ int main(int argc, char *argv[]) \
 { \
     QCoreApplication app(argc, argv); \
     TestObject tc; \
-    testing::GTEST_FLAG(throw_on_failure) = true; \
     testing::InitGoogleMock(&argc, argv); \
+    ::testing::TestEventListeners& listeners = ::testing::UnitTest::GetInstance()->listeners(); \
+    listeners.Append(new MockReport); \
     return QTest::qExec(&tc, argc, argv); \
 }
 
 using namespace testing;
+
+
+class MockReport : public EmptyTestEventListener {
+  virtual void OnTestPartResult(const TestPartResult& test_part_result) {
+    if(test_part_result.failed() || test_part_result.fatally_failed() ) {
+      QTest::qFail(test_part_result.message(), test_part_result.file_name() , test_part_result.line_number());
+    }
+  }
+};
 
 #endif

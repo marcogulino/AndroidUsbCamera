@@ -22,6 +22,7 @@
 #define SOCKETCONNECTORINTEGRATIONTEST_H
 
 #include <qt4/QtCore/QObject>
+#include "android_usb_camera_test_base.h"
 
 
 class SocketConnectorTest : public QObject

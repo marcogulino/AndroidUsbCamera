@@ -22,25 +22,22 @@
 #include "socketconnector.h"
 #include <QTcpSocket>
 
-#include "android_usb_camera_test_base.h"
 
 GQTEST_MAIN(SocketConnectorTest)
 
 class MockSocket : public QTcpSocket {
   public:
   MOCK_METHOD3(connectToHost, void(const QString &, quint16, QAbstractSocket::OpenMode) );
-  MOCK_METHOD0(abort, void() );
 };
 
 
 void SocketConnectorTest::testFoo()
 {
-  StrictMock<MockSocket> mockSocket;
+  MockSocket mockSocket;
   SocketConnector connector(&mockSocket, this);
-//   EXPECT_CALL(mockSocket, connectToHost(_,_,_ )).Times(1);
-  EXPECT_CALL(mockSocket, abort());
+  const QString hostname("localhost");
+  EXPECT_CALL(mockSocket, connectToHost(hostname,8080,_ ));
   connector.openConnection();
-//   QVERIFY(Mock::VerifyAndClearExpectations(&mockSocket));
 }
 
 #include "socketconnectortest.moc"
