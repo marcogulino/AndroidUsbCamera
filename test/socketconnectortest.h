@@ -56,7 +56,6 @@ class MockSocket : public AbstractSocket {
     MockSocket() : AbstractSocket(new VoidSocket(), NULL) {};
     MOCK_METHOD2(connectToHost, void(const QString &, int) );
     MOCK_METHOD0(readAll, QByteArray());
-    MOCK_METHOD0(connectSignals, void());
     void emitReadyRead() { emit readyRead() ;}
 };
 
