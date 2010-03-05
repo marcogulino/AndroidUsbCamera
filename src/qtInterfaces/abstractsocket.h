@@ -30,6 +30,7 @@ class AbstractSocket : public QObject
   public:
     AbstractSocket(QAbstractSocket *socket, QObject *parent = 0);
     virtual void connectToHost(const QString &hostname, int port);
+    virtual bool waitForConnected(int timeout=30000);
   private:
     QAbstractSocket *socket;
 };

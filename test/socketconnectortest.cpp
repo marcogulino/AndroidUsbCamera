@@ -20,23 +20,28 @@
 
 #include "socketconnectortest.h"
 #include "socketconnector.h"
-#include <QTcpSocket>
+#include "qtInterfaces/abstractsocket.h"
 
 
 GQTEST_MAIN(SocketConnectorTest)
 
-class MockSocket : public QTcpSocket {
+class MockSocket : public AbstractSocket {
   public:
-  MOCK_METHOD3(connectToHost, void(const QString &, quint16, QAbstractSocket::OpenMode) );
+    MockSocket() : AbstractSocket(NULL, NULL) {};
+    MOCK_METHOD2(connectToHost, void(const QString &, int) );
+    MOCK_METHOD1(waitForConnected, bool(int));
 };
 
 
-void SocketConnectorTest::testFoo()
+void SocketConnectorTest::shouldConnectToLocalhost()
 {
-  MockSocket mockSocket;
-  SocketConnector connector(&mockSocket, this);
+  StrictMock<MockSocket> mockSocket;
+
   const QString hostname("localhost");
-  EXPECT_CALL(mockSocket, connectToHost(hostname,8080,_ ));
+  EXPECT_CALL(mockSocket, connectToHost(QString("localhost"), 8080) );
+  EXPECT_CALL(mockSocket, waitForConnected(30000)).WillOnce(Return(true));
+  SocketConnector connector(&mockSocket, this);
+
   connector.openConnection();
 }
 

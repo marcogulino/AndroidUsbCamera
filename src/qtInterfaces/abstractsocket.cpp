@@ -32,5 +32,11 @@ void AbstractSocket::connectToHost(const QString& hostname, int port)
   socket->connectToHost(hostname, port);
 }
 
+
+bool AbstractSocket::waitForConnected(int timeout)
+{
+  socket->waitForConnected(timeout);
+}
+
 #include "abstractsocket.moc"
 

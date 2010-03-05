@@ -22,16 +22,16 @@
 #define SOCKETCONNECTOR_H
 
 #include <qt4/QtCore/QObject>
-#include <QTcpSocket>
+#include "qtInterfaces/abstractsocket.h"
 
 class SocketConnector : public QObject
 {
   Q_OBJECT
   public:
-    SocketConnector(QTcpSocket *socket, QObject* parent = 0);
+    SocketConnector(AbstractSocket *socket, QObject* parent = 0);
     void openConnection();
   private:
-    QTcpSocket *socket;
+    AbstractSocket *socket;
 };
 
 #endif // SOCKETCONNECTOR_H

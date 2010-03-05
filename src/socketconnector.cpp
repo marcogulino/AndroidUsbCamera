@@ -21,16 +21,16 @@
 #include "socketconnector.h"
 
 
-SocketConnector::SocketConnector(QTcpSocket *socket, QObject* parent): QObject(parent)
+SocketConnector::SocketConnector(AbstractSocket *socket, QObject* parent): QObject(parent)
 {
   this->socket=socket;
+  parent->killTimer(5);
 }
 
 void SocketConnector::openConnection()
 {
-  const QString hostname("localhost");
-  quint16 port=8080;
-  socket->connectToHost(hostname, port, QAbstractSocket::ReadWrite);
+  socket->connectToHost("localhost", 8080);
+  socket->waitForConnected();
 }
 
 #include "socketconnector.moc"

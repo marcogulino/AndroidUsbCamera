@@ -29,7 +29,7 @@ class SocketConnectorTest : public QObject
 {
 Q_OBJECT
   private slots:
-    void testFoo();
+    void shouldConnectToLocalhost();
 };
 
 #endif // SOCKETCONNECTORINTEGRATIONTEST_H
