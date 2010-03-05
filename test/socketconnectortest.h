@@ -34,11 +34,11 @@ class SocketConnectorTest : public QObject
 {
 Q_OBJECT
   private slots:
-    void initTestCase();
+    void init();
     void shouldConnectToLocalhost();
     void shouldReadDataOnSocketSignalAndDoNothingOnNoData();
     void shouldReadDataOnSocketSignalAndPassDataToFramesExtractor();
-    void cleanupTestCase();
+    void cleanup();
   private:
     MockSocket *mocksocket;
     MockFramesDataExtractor *mockframesdataextractor;

@@ -23,7 +23,7 @@
 
 GQTEST_MAIN(SocketConnectorTest)
 
-void SocketConnectorTest::initTestCase()
+void SocketConnectorTest::init()
 {
   mocksocket=new StrictMock<MockSocket>();
   mockframesdataextractor=new StrictMock<MockFramesDataExtractor>();
@@ -56,7 +56,7 @@ void SocketConnectorTest::shouldReadDataOnSocketSignalAndPassDataToFramesExtract
 
 
 
-void SocketConnectorTest::cleanupTestCase()
+void SocketConnectorTest::cleanup()
 {
   delete mocksocket;
   delete mockframesdataextractor;

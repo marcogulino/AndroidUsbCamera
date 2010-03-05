@@ -37,7 +37,8 @@ void SocketConnector::openConnection()
 void SocketConnector::gotData()
 {
   QByteArray data=socket->readAll();
-  if(data.size()>0) framesdataextractor->gotFramesData(data);
+  if(data.size()>0)
+    framesdataextractor->gotFramesData(data);
 }
 
 #include "socketconnector.moc"
