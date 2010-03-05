@@ -24,7 +24,6 @@
 SocketConnector::SocketConnector(AbstractSocket *socket, QObject* parent): QObject(parent)
 {
   this->socket=socket;
-  parent->killTimer(5);
 }
 
 void SocketConnector::openConnection()

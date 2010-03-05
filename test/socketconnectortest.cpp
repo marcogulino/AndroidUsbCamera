@@ -37,9 +37,8 @@ void SocketConnectorTest::shouldConnectToLocalhost()
 {
   StrictMock<MockSocket> mockSocket;
 
-  const QString hostname("localhost");
-  EXPECT_CALL(mockSocket, connectToHost(QString("localhost"), 8080) );
-  EXPECT_CALL(mockSocket, waitForConnected(30000)).WillOnce(Return(true));
+  Expectation shouldConnectFirst = EXPECT_CALL(mockSocket, connectToHost(QString("localhost"), 8080) );
+  EXPECT_CALL(mockSocket, waitForConnected(30000)).After(shouldConnectFirst).WillOnce(Return(true));
   SocketConnector connector(&mockSocket, this);
 
   connector.openConnection();
