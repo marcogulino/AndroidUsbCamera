@@ -21,3 +21,6 @@ Optional:
 - Run the tests:
 -- make test (or just type ctest)
 
+to have a better output with failing tests, setting the environment variable:
+- CTEST_OUTPUT_ON_FAILURE=1
+can greatly help.
