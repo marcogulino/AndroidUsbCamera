@@ -24,12 +24,45 @@
 #include <qt4/QtCore/QObject>
 #include "android_usb_camera_test_base.h"
 
+#include "qtInterfaces/abstractsocket.h"
+#include "framesdataextractor.h"
+class MockSocket;
+class MockFramesDataExtractor;
+class SocketConnector;
 
 class SocketConnectorTest : public QObject
 {
 Q_OBJECT
   private slots:
+    void initTestCase();
     void shouldConnectToLocalhost();
+    void shouldReadDataOnSocketSignalAndDoNothingOnNoData();
+    void shouldReadDataOnSocketSignalAndPassDataToFramesExtractor();
+    void cleanupTestCase();
+  private:
+    MockSocket *mocksocket;
+    MockFramesDataExtractor *mockframesdataextractor;
+    SocketConnector *socketConnector;
+  };
+
+
+  class VoidSocket : public QAbstractSocket {
+    public:
+      VoidSocket() : QAbstractSocket(UnknownSocketType, NULL) {};
+  };
+
+class MockSocket : public AbstractSocket {
+  public:
+    MockSocket() : AbstractSocket(new VoidSocket(), NULL) {};
+    MOCK_METHOD2(connectToHost, void(const QString &, int) );
+    MOCK_METHOD0(readAll, QByteArray());
+    MOCK_METHOD0(connectSignals, void());
+    void emitReadyRead() { emit readyRead() ;}
+};
+
+class MockFramesDataExtractor : public FramesDataExtractor {
+  public:
+    MOCK_METHOD1(gotFramesData, void(const QByteArray &));
 };
 
 #endif // SOCKETCONNECTORINTEGRATIONTEST_H

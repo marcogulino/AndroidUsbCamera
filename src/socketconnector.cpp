@@ -21,15 +21,23 @@
 #include "socketconnector.h"
 
 
-SocketConnector::SocketConnector(AbstractSocket *socket, QObject* parent): QObject(parent)
+SocketConnector::SocketConnector(AbstractSocket *socket, FramesDataExtractor *framesdataextractor , QObject* parent): QObject(parent)
 {
   this->socket=socket;
+  this->framesdataextractor=framesdataextractor;
+  connect(socket, SIGNAL(readyRead()), this, SLOT(gotData()));
 }
 
 void SocketConnector::openConnection()
 {
   socket->connectToHost("localhost", 8080);
-  socket->waitForConnected();
+}
+
+
+void SocketConnector::gotData()
+{
+  QByteArray data=socket->readAll();
+  if(data.size()>0) framesdataextractor->gotFramesData(data);
 }
 
 #include "socketconnector.moc"

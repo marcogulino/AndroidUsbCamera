@@ -20,28 +20,46 @@
 
 #include "socketconnectortest.h"
 #include "socketconnector.h"
-#include "qtInterfaces/abstractsocket.h"
-
 
 GQTEST_MAIN(SocketConnectorTest)
 
-class MockSocket : public AbstractSocket {
-  public:
-    MockSocket() : AbstractSocket(NULL, NULL) {};
-    MOCK_METHOD2(connectToHost, void(const QString &, int) );
-    MOCK_METHOD1(waitForConnected, bool(int));
-};
+void SocketConnectorTest::initTestCase()
+{
+  mocksocket=new StrictMock<MockSocket>();
+  mockframesdataextractor=new StrictMock<MockFramesDataExtractor>();
+  socketConnector= new SocketConnector(mocksocket, mockframesdataextractor, this);
+}
 
 
 void SocketConnectorTest::shouldConnectToLocalhost()
 {
-  StrictMock<MockSocket> mockSocket;
+  Expectation shouldConnectFirst = EXPECT_CALL(*mocksocket, connectToHost(QString("localhost"), 8080) );
+  
+  socketConnector->openConnection();
+}
 
-  Expectation shouldConnectFirst = EXPECT_CALL(mockSocket, connectToHost(QString("localhost"), 8080) );
-  EXPECT_CALL(mockSocket, waitForConnected(30000)).After(shouldConnectFirst).WillOnce(Return(true));
-  SocketConnector connector(&mockSocket, this);
+void SocketConnectorTest::shouldReadDataOnSocketSignalAndDoNothingOnNoData()
+{
+  EXPECT_CALL(*mocksocket, readAll()).WillOnce(Return(QByteArray()));
+  EXPECT_CALL(*mockframesdataextractor, gotFramesData(_)).Times(0);
+  mocksocket->emitReadyRead();
+}
 
-  connector.openConnection();
+void SocketConnectorTest::shouldReadDataOnSocketSignalAndPassDataToFramesExtractor()
+{
+  QByteArray data("any not empty QByteArray");
+  EXPECT_CALL(*mocksocket, readAll()).WillOnce(Return(data));
+  EXPECT_CALL(*mockframesdataextractor, gotFramesData(data));
+  mocksocket->emitReadyRead();
+}
+
+
+
+
+void SocketConnectorTest::cleanupTestCase()
+{
+  delete mocksocket;
+  delete mockframesdataextractor;
 }
 
 #include "socketconnectortest.moc"

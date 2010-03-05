@@ -18,32 +18,17 @@
 
 */
 
-#include "abstractsocket.h"
+#ifndef FRAMESDATAEXTRACTOR_H
+#define FRAMESDATAEXTRACTOR_H
+
+#include <qt4/QtCore/QObject>
 
 
-AbstractSocket::AbstractSocket(QAbstractSocket* socket, QObject* parent): QObject(parent)
+class FramesDataExtractor : public QObject
 {
-  this->socket=socket;
-  connectSignals();
-}
+  Q_OBJECT
+  public:
+    virtual void gotFramesData(const QByteArray &data);
+};
 
-void AbstractSocket::connectSignals()
-{
-  connect(socket, SIGNAL(readyRead()), this, SIGNAL(readyRead()));
-}
-
-
-void AbstractSocket::connectToHost(const QString& hostname, int port)
-{
-  socket->connectToHost(hostname, port);
-}
-
-QByteArray AbstractSocket::readAll()
-{
-  return socket->readAll();
-}
-
-
-
-#include "abstractsocket.moc"
-
+#endif // FRAMESDATAEXTRACTOR_H

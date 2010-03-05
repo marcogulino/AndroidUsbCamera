@@ -1,9 +1,10 @@
 #ifndef ANDROID_USB_CAMERA_TEST_BASE_H
 #define ANDROID_USB_CAMERA_TEST_BASE_H
+#include <iostream>
 
 #include <QTest>
 #include <gmock/gmock.h>
-
+#include <QString>
 #define GQTEST_MAIN(TestObject) \
 int main(int argc, char *argv[]) \
 { \
@@ -11,6 +12,7 @@ int main(int argc, char *argv[]) \
     TestObject tc; \
     testing::InitGoogleMock(&argc, argv); \
     ::testing::TestEventListeners& listeners = ::testing::UnitTest::GetInstance()->listeners(); \
+    delete listeners.Release(listeners.default_result_printer()); \
     listeners.Append(new MockReport); \
     return QTest::qExec(&tc, argc, argv); \
 }
@@ -26,4 +28,9 @@ class MockReport : public EmptyTestEventListener {
   }
 };
 
+QT_BEGIN_NAMESPACE
+void PrintTo(const QString& aQString, ::std::ostream* os) {
+  *os << QString("\"%1\"").arg(aQString).toLocal8Bit().data();
+}
+QT_END_NAMESPACE
 #endif
