@@ -1,3 +1,8 @@
+Prerequisites: 
+- git
+- QT framework (any version above 4.2 should work)
+- google mock framework: http://code.google.com/p/googlemock/
+
 Build instructions:
 - Checkout project
 -- git clone git://github.com/marcogulino/AndroidUsbCamera.git
