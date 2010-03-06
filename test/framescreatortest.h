@@ -18,35 +18,41 @@
 
 */
 
-#ifndef FRAMESDATAEXTRACTORTEST_H
-#define FRAMESDATAEXTRACTORTEST_H
+#ifndef FRAMESCREATORTEST_H
+#define FRAMESCREATORTEST_H
 
 #include <qt4/QtCore/QObject>
 #include "android_usb_camera_test_base.h"
 #include "framescreator.h"
-class MockFramesCreator;
-class FramesDataExtractor;
-class FramesDataExtractorTest : public QObject
+class MockFramesFactory;
+class MockFrame;
+
+class FramesCreatorTest : public QObject
 {
   Q_OBJECT
   private:
-    MockFramesCreator *mockFramesCreator;
-    FramesDataExtractor *framesDataExtractor;
-    
+    FramesCreator *framesCreator;
+    MockFramesFactory *mockFramesFactory;
+    MockFrame *mockFrame;
   private slots:
     void init();
-    void shouldAskForRemainingBytesOnNewData();
-    void shouldCreateNewFrameOnNoRemainingBytesAndStripHeader();
-    void shouldAppendRemainingBytesToExistingFrame();
-    void shouldSplitDataOnOverlappingData();
+    void shouldReturn0AsRemainingBytesIfCurrentFrameIsBlank();
+    void shouldCreateNewFrame();
+    void shouldWriteDataToFrame();
+    void shouldReportRemainingBytes();
     void cleanup();
 };
 
-class MockFramesCreator : public FramesCreator {
+
+class MockFramesFactory : public FramesFactory {
   public:
-    MockFramesCreator() : FramesCreator(NULL) {};
-    MOCK_METHOD0(remainingBytesForCurrentFrame, quint16());
-    MOCK_METHOD1(addFramesData, void(const QByteArray &));
-    MOCK_METHOD1(createNewFrame, void(const QByteArray&));
+    MOCK_METHOD1(create, Frame*(const QByteArray&));
 };
-#endif // FRAMESDATAEXTRACTORTEST_H
+
+class MockFrame : public Frame {
+  public:
+    MockFrame() : Frame(0, 0, 0) {};
+    MOCK_METHOD0(totalbytes, quint16());
+    MOCK_METHOD0(frameData, QByteArray*());
+};
+#endif // FRAMESCREATORTEST_H

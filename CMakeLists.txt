@@ -14,3 +14,4 @@ target_link_libraries(AndroidUsbCamera AndroidUsbCameraStaticLib -lavformat -lsw
 add_subdirectory(test)
 ADD_TEST("SocketConnectorTest" "${CMAKE_CURRENT_BINARY_DIR}/test/SocketConnectorTest")
 ADD_TEST("FramesDataExtractorTest" "${CMAKE_CURRENT_BINARY_DIR}/test/FramesDataExtractorTest")
+ADD_TEST("FramesCreatorTest" "${CMAKE_CURRENT_BINARY_DIR}/test/FramesCreatorTest")

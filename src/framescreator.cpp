@@ -19,4 +19,26 @@
 */
 
 #include "framescreator.h"
+FramesCreator::FramesCreator(FramesFactory* framesFactory, QObject *parent): QObject(parent)
+{
+  this->framesFactory=framesFactory;
+  currentFrame=0;
+}
 
+void FramesCreator::addFramesData ( const QByteArray& data )
+{
+  currentFrame->frameData()->append(data);
+}
+
+void FramesCreator::createNewFrame ( const QByteArray& header )
+{
+  currentFrame=framesFactory->create(header);
+}
+
+quint16 FramesCreator::remainingBytesForCurrentFrame()
+{
+  if(! currentFrame) return 0;
+  return currentFrame->totalbytes() - currentFrame->frameData()->size();
+}
+
+#include "framescreator.moc"

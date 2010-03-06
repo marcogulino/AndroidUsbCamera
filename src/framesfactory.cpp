@@ -18,26 +18,7 @@
 
 */
 
-#ifndef FRAMESCREATOR_H
-#define FRAMESCREATOR_H
-
-#include <qt4/QtCore/QObject>
-#define FRAMES_HEADER_LENGTH 4
-
 #include "framesfactory.h"
-#include "frame.h"
 
-class FramesCreator : public QObject
-{
-  Q_OBJECT
-  public:
-    FramesCreator(FramesFactory *framesFactory, QObject *parent=0);
-    virtual quint16 remainingBytesForCurrentFrame();
-    virtual void addFramesData(const QByteArray &data);
-    virtual void createNewFrame(const QByteArray &header);
-  private:
-    FramesFactory *framesFactory;
-    Frame *currentFrame;
-};
+#include "framesfactory.moc"
 
-#endif // FRAMESCREATOR_H
