@@ -19,10 +19,31 @@
 */
 
 #include "framesdataextractor.h"
-
-void FramesDataExtractor::gotFramesData(const QByteArray& data)
+FramesDataExtractor::FramesDataExtractor ( FramesCreator* framesCreator, QObject* parent ) : QObject ( parent )
 {
+  this->framesCreator=framesCreator;
+}
 
+void FramesDataExtractor::gotFramesData(QByteArray data)
+{
+  quint16 remainingBytes=framesCreator->remainingBytesForCurrentFrame();
+  if(!remainingBytes) {
+    remainingBytes=createNewFrame(&data);
+  }
+  if(remainingBytes<data.size()) {
+    framesCreator->addFramesData(data.left(remainingBytes));
+    data.remove(0, remainingBytes);
+    remainingBytes=createNewFrame(&data);
+  }
+  framesCreator->addFramesData(data);
+}
+
+quint16 FramesDataExtractor::createNewFrame ( QByteArray *data )
+{
+    QByteArray header=data->left(FRAMES_HEADER_LENGTH);
+    framesCreator->createNewFrame(header);
+    data->remove(0, FRAMES_HEADER_LENGTH);
+    return framesCreator->remainingBytesForCurrentFrame();
 }
 
 #include "framesdataextractor.moc"

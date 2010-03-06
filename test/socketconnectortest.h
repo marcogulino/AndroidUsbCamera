@@ -61,7 +61,8 @@ class MockSocket : public SocketInterface {
 
 class MockFramesDataExtractor : public FramesDataExtractor {
   public:
-    MOCK_METHOD1(gotFramesData, void(const QByteArray &));
+    MockFramesDataExtractor() : FramesDataExtractor(NULL) {};
+    MOCK_METHOD1(gotFramesData, void(QByteArray));
 };
 
 #endif // SOCKETCONNECTORINTEGRATIONTEST_H

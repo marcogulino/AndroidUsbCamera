@@ -18,21 +18,5 @@
 
 */
 
-#ifndef FRAMESDATAEXTRACTOR_H
-#define FRAMESDATAEXTRACTOR_H
-
-#include <qt4/QtCore/QObject>
 #include "framescreator.h"
 
-class FramesDataExtractor : public QObject
-{
-  Q_OBJECT
-  public:
-    FramesDataExtractor ( FramesCreator *framesCreator, QObject* parent = 0 );
-    virtual void gotFramesData(QByteArray data);
-  private:
-    FramesCreator *framesCreator;
-    quint16 createNewFrame(QByteArray *data);
-};
-
-#endif // FRAMESDATAEXTRACTOR_H
