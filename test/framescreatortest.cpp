@@ -19,6 +19,8 @@
 */
 
 #include "framescreatortest.h"
+#include <QSignalSpy>
+
 GQTEST_MAIN(FramesCreatorTest)
 
 void FramesCreatorTest::init()
@@ -46,7 +48,9 @@ void FramesCreatorTest::shouldReportRemainingBytes()
   EXPECT_CALL(*mockFramesFactory, create(QByteArray("header data"))).WillOnce(Return(mockFrame));
   EXPECT_CALL(*mockFrame, totalbytes()).Times(AnyNumber()).WillRepeatedly(Return(1024));
   EXPECT_CALL(*mockFrame, frameData()).Times(AnyNumber()).WillRepeatedly(Return(&data));
+  
   framesCreator->createNewFrame(QByteArray("header data"));
+  
   QCOMPARE(framesCreator->remainingBytesForCurrentFrame(), (quint16) 1024);
   data.append("1234567890");
   QCOMPARE(framesCreator->remainingBytesForCurrentFrame(), (quint16) (1024-10) );
@@ -59,9 +63,29 @@ void FramesCreatorTest::shouldWriteDataToFrame()
   QByteArray data;
   EXPECT_CALL(*mockFramesFactory, create(QByteArray("header data"))).WillOnce(Return(mockFrame));
   EXPECT_CALL(*mockFrame, frameData()).Times(AnyNumber()).WillRepeatedly(Return(&data));
+  EXPECT_CALL(*mockFrame, totalbytes()).Times(AnyNumber()).WillRepeatedly(Return(100));
+
   framesCreator->createNewFrame(QByteArray("header data"));
   framesCreator->addFramesData(QByteArray("Any data to write into the frame"));
   QCOMPARE(data, QByteArray("Any data to write into the frame"));
+}
+
+void FramesCreatorTest::shouldEmitProcessedFrameSignalWhenNoMoreBytesAreRemaining()
+{
+  QByteArray data;
+  QSignalSpy spy(framesCreator, SIGNAL(frameProcessed(Frame*)));
+
+  EXPECT_CALL(*mockFramesFactory, create(QByteArray("header data"))).WillOnce(Return(mockFrame));
+  EXPECT_CALL(*mockFrame, frameData()).Times(AnyNumber()).WillRepeatedly(Return(&data));
+  EXPECT_CALL(*mockFrame, totalbytes()).Times(AnyNumber()).WillRepeatedly(Return(10));
+
+  framesCreator->createNewFrame(QByteArray("header data"));
+  
+  framesCreator->addFramesData(QByteArray("12345"));
+  QCOMPARE(spy.count(), 0);
+  framesCreator->addFramesData(QByteArray("12345"));
+  QCOMPARE(framesCreator->remainingBytesForCurrentFrame(), (quint16)0);
+  QCOMPARE(spy.count(), 1);
 }
 
 

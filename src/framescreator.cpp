@@ -28,6 +28,10 @@ FramesCreator::FramesCreator(FramesFactory* framesFactory, QObject *parent): QOb
 void FramesCreator::addFramesData ( const QByteArray& data )
 {
   currentFrame->frameData()->append(data);
+  if(! remainingBytesForCurrentFrame()) {
+    emit frameProcessed(currentFrame);
+    currentFrame=NULL;
+  }
 }
 
 void FramesCreator::createNewFrame ( const QByteArray& header )

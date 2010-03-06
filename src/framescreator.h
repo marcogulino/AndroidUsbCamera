@@ -38,6 +38,8 @@ class FramesCreator : public QObject
   private:
     FramesFactory *framesFactory;
     Frame *currentFrame;
+  signals:
+    void frameProcessed(Frame*);
 };
 
 #endif // FRAMESCREATOR_H

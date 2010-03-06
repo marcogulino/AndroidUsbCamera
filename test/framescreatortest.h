@@ -40,6 +40,7 @@ class FramesCreatorTest : public QObject
     void shouldCreateNewFrame();
     void shouldWriteDataToFrame();
     void shouldReportRemainingBytes();
+    void shouldEmitProcessedFrameSignalWhenNoMoreBytesAreRemaining();
     void cleanup();
 };
 
