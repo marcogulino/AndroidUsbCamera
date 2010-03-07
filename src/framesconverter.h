@@ -28,7 +28,7 @@ class FramesConverter : public QThread
 {
   Q_OBJECT
   public:
-    FramesConverter(QObject *parent=0);
+    FramesConverter(QObject* parent = 0) : QThread(parent) {};
     ~FramesConverter();
   public slots:
     void gotFrame(Frame *frame);

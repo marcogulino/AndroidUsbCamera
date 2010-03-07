@@ -22,6 +22,8 @@
 #include <QFile>
 #include <QDebug>
 
+#ifdef __linux__
+
 extern "C" {
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
@@ -41,10 +43,6 @@ class VideoConversionData {
     struct video_capability vid_caps;
 };
 
-FramesConverter::FramesConverter(QObject* parent): QThread(parent)
-{
-
-}
 
 FramesConverter::~FramesConverter()
 {
@@ -121,6 +119,27 @@ void FramesConverter::reportError(const char* errorPrefix)
 {
   qDebug() << errorPrefix << strerror(errno);
 }
+#else
+#warning You are compiling an application that will do nothing, since you are not on GNU/Linux
+#warning If you are happy with that...
+void FramesConverter::gotFrame(Frame* frame)
+{
+
+}
+void FramesConverter::reportError(const char* errorPrefix)
+{
+
+}
+void FramesConverter::run()
+{
+    QThread::run();
+}
+FramesConverter::~FramesConverter()
+{
+
+}
+
+#endif
 
 #include "framesconverter.moc"
 
