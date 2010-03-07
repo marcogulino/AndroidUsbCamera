@@ -30,6 +30,8 @@ extern "C" {
 #include <linux/videodev.h>
 #include <sys/ioctl.h>
 #include "frame.h"
+#include <QCoreApplication>
+#include <qstringlist.h>
 
 
 class VideoConversionData {
@@ -48,13 +50,16 @@ FramesConverter::~FramesConverter()
 {
   // TODO move these in another slot. Which one?
   delete videoConversionData;
+
   videodev->close();
+  delete videodev;
 }
 
 
 void FramesConverter::run()
 {
-  videodev=new QFile("/dev/video0", this);
+  QString filename=QCoreApplication::arguments()[1];
+  videodev=new QFile(filename, 0);
   if(! videodev->open(QIODevice::ReadWrite)) {
     qDebug() << "Could not open video device: " << videodev->errorString() << " (" << videodev->error() << ")";
     QThread::exit(1);

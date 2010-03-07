@@ -35,7 +35,7 @@ class AndroidUsbCamera : public QObject
 {
   Q_OBJECT
   public:
-    AndroidUsbCamera();
+    AndroidUsbCamera(QObject *parent=0);
   private:
     SocketInterface *socketInterface;
     FramesFactory *framesFactory;

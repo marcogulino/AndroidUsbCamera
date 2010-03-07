@@ -25,8 +25,9 @@
 
 #include <QDebug>
 #include <QTimer>
+#include <QCoreApplication>
 
-AndroidUsbCamera::AndroidUsbCamera() : QObject(NULL) {
+AndroidUsbCamera::AndroidUsbCamera(QObject *parent) : QObject(parent) {
   qDebug() << "Initializing objects...";
   socketInterface=new SocketInterface(new QTcpSocket(this), this);
   framesFactory=new FramesFactory(this);
@@ -35,6 +36,7 @@ AndroidUsbCamera::AndroidUsbCamera() : QObject(NULL) {
   connector=new SocketConnector(socketInterface, framesDataExtractor, this);
   framesConverter=new FramesConverter(this);
   connect(framesCreator, SIGNAL(frameProcessed(Frame*)), framesConverter, SLOT(gotFrame(Frame*)));
+  connect(QCoreApplication::instance(), SIGNAL(aboutToQuit()), framesConverter, SLOT(quit()));
   framesConverter->start();
   connector->openConnection();
 }
