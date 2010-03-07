@@ -27,6 +27,10 @@ to have a better output with failing tests, setting the environment variable:
 can greatly help.
 
 Usage:
+- first of all, start USB Webcamera application on your phone
+- forward tcp connections with adb:
+-- adb forward tcp:8080 tcp:8080
+
 - Load vloopback module (sources and instructions: http://www.lavrsen.dk/twiki/bin/view/Motion/VideoFourLinuxLoopbackDevice)
 -- modprobe vloopback
 - Find the video output device
