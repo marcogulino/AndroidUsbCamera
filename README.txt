@@ -1,6 +1,7 @@
 Prerequisites: 
 - git
 - QT framework (any version above 4.2 should work)
+Only for unit testing(developers):
 - google mock framework: http://code.google.com/p/googlemock/
 
 Build instructions:
@@ -18,7 +19,7 @@ OR
 - build the project:
 -- make
 Optional:
-- Run the tests:
+- Run the tests (build only if CMAKE_BUILD_TYPE is debug):
 -- make test (or just type ctest)
 
 to have a better output with failing tests, setting the environment variable:
