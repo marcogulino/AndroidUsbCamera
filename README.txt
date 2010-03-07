@@ -24,3 +24,15 @@ Optional:
 to have a better output with failing tests, setting the environment variable:
 - CTEST_OUTPUT_ON_FAILURE=1
 can greatly help.
+
+Usage:
+- Load vloopback module (sources and instructions: http://www.lavrsen.dk/twiki/bin/view/Motion/VideoFourLinuxLoopbackDevice)
+-- modprobe vloopback
+- Find the video output device
+-- dmesg | grep vloopback
+-- look for a string like "[vloopback_init] : Loopback 0 registered, input: video0, output: video1
+-- in this case, /dev/video0 is your video output device
+- load AndroidUsbCamera application:
+-- AndroidUsbCamera /dev/video0
+
+
