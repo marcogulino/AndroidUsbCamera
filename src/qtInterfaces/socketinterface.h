@@ -31,12 +31,16 @@ class SocketInterface : public QObject
     SocketInterface(QAbstractSocket *socket, QObject *parent = 0);
     virtual void connectToHost(const QString &hostname, int port);
     virtual QByteArray readAll();
+    virtual QAbstractSocket::SocketState state ();
   private:
     QAbstractSocket *socket;
   private:
     virtual void connectSignals();
+  private slots:
+    void error( QAbstractSocket::SocketError socketError );
   signals:
     void readyRead();
+    void connected();
 };
 
 #endif // ABSTRACTSOCKET_H

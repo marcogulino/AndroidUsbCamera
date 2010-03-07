@@ -26,7 +26,7 @@ FramesDataExtractor::FramesDataExtractor ( FramesCreator* framesCreator, QObject
 
 void FramesDataExtractor::gotFramesData(QByteArray data)
 {
-  quint16 remainingBytes=framesCreator->remainingBytesForCurrentFrame();
+  quint64 remainingBytes=framesCreator->remainingBytesForCurrentFrame();
   if(!remainingBytes) {
     remainingBytes=createNewFrame(&data);
   }
@@ -38,7 +38,7 @@ void FramesDataExtractor::gotFramesData(QByteArray data)
   framesCreator->addFramesData(data);
 }
 
-quint16 FramesDataExtractor::createNewFrame ( QByteArray *data )
+quint64 FramesDataExtractor::createNewFrame ( QByteArray *data )
 {
     QByteArray header=data->left(FRAMES_HEADER_LENGTH);
     framesCreator->createNewFrame(header);

@@ -18,49 +18,26 @@
 
 */
 
-#include "frame.h"
-
-class FramePrivate {
+#ifndef FRAMESCONVERTER_H
+#define FRAMESCONVERTER_H
+#include <QThread>
+class QFile;
+class Frame;
+class VideoConversionData;
+class FramesConverter : public QThread
+{
+  Q_OBJECT
   public:
-    QByteArray frameData;
-    quint16 width;
-    quint16 height;
-    quint16 bitsPerPixel;
+    FramesConverter(QObject *parent=0);
+    ~FramesConverter();
+  public slots:
+    void gotFrame(Frame *frame);
+  protected:
+    virtual void run();
+  private:
+    QFile *videodev;
+    VideoConversionData *videoConversionData;
+    void reportError(const char* errorPrefix);
 };
 
-Frame::Frame ( quint16 width, quint16 height, quint16 bitsPerPixel, QObject* parent ) : QObject ( parent )
-{
-  d=new FramePrivate;
-  d->width=width;
-  d->height=height;
-  d->bitsPerPixel=bitsPerPixel;
-  d->frameData.reserve(totalbytes());
-}
-
-Frame::~Frame()
-{
-  delete d;
-}
-
-QByteArray* Frame::frameData()
-{
-  return &(d->frameData);
-}
-
-quint64 Frame::totalbytes()
-{
-  return (d->bitsPerPixel * d->width * d->height) / 8;
-}
-
-quint16 Frame::height()
-{
-  return d->height;
-}
-
-quint16 Frame::width()
-{
-  return d->width;
-}
-
-#include "frame.moc"
-
+#endif // FRAMESCONVERTER_H

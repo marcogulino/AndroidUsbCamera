@@ -19,6 +19,7 @@
 */
 
 #include "socketinterface.h"
+#include <QDebug>
 
 
 SocketInterface::SocketInterface(QAbstractSocket* socket, QObject* parent): QObject(parent)
@@ -30,6 +31,10 @@ SocketInterface::SocketInterface(QAbstractSocket* socket, QObject* parent): QObj
 void SocketInterface::connectSignals()
 {
   connect(socket, SIGNAL(readyRead()), this, SIGNAL(readyRead()));
+  connect(socket, SIGNAL(connected()), this, SIGNAL(connected()));
+  
+  // TODO: move to another object
+  connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(error(QAbstractSocket::SocketError)));
 }
 
 
@@ -43,6 +48,16 @@ QByteArray SocketInterface::readAll()
   return socket->readAll();
 }
 
+void SocketInterface::error(QAbstractSocket::SocketError socketError)
+{
+  qDebug() << "Got Socket Error: " << socketError;
+}
+
+
+QAbstractSocket::SocketState SocketInterface::state()
+{
+  return socket->state();
+}
 
 
 #include "socketinterface.moc"

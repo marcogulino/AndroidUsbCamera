@@ -18,49 +18,26 @@
 
 */
 
-#include "frame.h"
+#include "androidusbcamera.h"
+#include "framesconverter.h"
+#include "socketconnector.h"
+#include <QTcpSocket>
 
-class FramePrivate {
-  public:
-    QByteArray frameData;
-    quint16 width;
-    quint16 height;
-    quint16 bitsPerPixel;
-};
+#include <QDebug>
+#include <QTimer>
 
-Frame::Frame ( quint16 width, quint16 height, quint16 bitsPerPixel, QObject* parent ) : QObject ( parent )
-{
-  d=new FramePrivate;
-  d->width=width;
-  d->height=height;
-  d->bitsPerPixel=bitsPerPixel;
-  d->frameData.reserve(totalbytes());
+AndroidUsbCamera::AndroidUsbCamera() : QObject(NULL) {
+  qDebug() << "Initializing objects...";
+  socketInterface=new SocketInterface(new QTcpSocket(this), this);
+  framesFactory=new FramesFactory(this);
+  framesCreator=new FramesCreator(framesFactory, this);
+  framesDataExtractor=new FramesDataExtractor(framesCreator, this);
+  connector=new SocketConnector(socketInterface, framesDataExtractor, this);
+  framesConverter=new FramesConverter(this);
+  connect(framesCreator, SIGNAL(frameProcessed(Frame*)), framesConverter, SLOT(gotFrame(Frame*)));
+  framesConverter->start();
+  connector->openConnection();
 }
 
-Frame::~Frame()
-{
-  delete d;
-}
-
-QByteArray* Frame::frameData()
-{
-  return &(d->frameData);
-}
-
-quint64 Frame::totalbytes()
-{
-  return (d->bitsPerPixel * d->width * d->height) / 8;
-}
-
-quint16 Frame::height()
-{
-  return d->height;
-}
-
-quint16 Frame::width()
-{
-  return d->width;
-}
-
-#include "frame.moc"
+#include "androidusbcamera.moc"
 

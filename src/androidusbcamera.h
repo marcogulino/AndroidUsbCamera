@@ -18,49 +18,31 @@
 
 */
 
-#include "frame.h"
+#ifndef ANDROIDUSBCAMERA_H
+#define ANDROIDUSBCAMERA_H
 
-class FramePrivate {
+#include <qt4/QtCore/QObject>
+
+class Frame;
+class SocketInterface; 
+class FramesFactory   ;
+class FramesCreator    ;
+class FramesDataExtractor;
+class SocketConnector     ;
+class FramesConverter;
+
+class AndroidUsbCamera : public QObject
+{
+  Q_OBJECT
   public:
-    QByteArray frameData;
-    quint16 width;
-    quint16 height;
-    quint16 bitsPerPixel;
+    AndroidUsbCamera();
+  private:
+    SocketInterface *socketInterface;
+    FramesFactory *framesFactory;
+    FramesCreator *framesCreator;
+    FramesDataExtractor *framesDataExtractor;
+    SocketConnector *connector;
+    FramesConverter *framesConverter;
 };
 
-Frame::Frame ( quint16 width, quint16 height, quint16 bitsPerPixel, QObject* parent ) : QObject ( parent )
-{
-  d=new FramePrivate;
-  d->width=width;
-  d->height=height;
-  d->bitsPerPixel=bitsPerPixel;
-  d->frameData.reserve(totalbytes());
-}
-
-Frame::~Frame()
-{
-  delete d;
-}
-
-QByteArray* Frame::frameData()
-{
-  return &(d->frameData);
-}
-
-quint64 Frame::totalbytes()
-{
-  return (d->bitsPerPixel * d->width * d->height) / 8;
-}
-
-quint16 Frame::height()
-{
-  return d->height;
-}
-
-quint16 Frame::width()
-{
-  return d->width;
-}
-
-#include "frame.moc"
-
+#endif // ANDROIDUSBCAMERA_H

@@ -33,7 +33,7 @@ void FramesCreatorTest::init()
 
 void FramesCreatorTest::shouldReturn0AsRemainingBytesIfCurrentFrameIsBlank()
 {
-  QCOMPARE(framesCreator->remainingBytesForCurrentFrame(), (quint16)0);
+  QCOMPARE(framesCreator->remainingBytesForCurrentFrame(), (quint64)0);
 }
 
 void FramesCreatorTest::shouldCreateNewFrame()
@@ -51,11 +51,11 @@ void FramesCreatorTest::shouldReportRemainingBytes()
   
   framesCreator->createNewFrame(QByteArray("header data"));
   
-  QCOMPARE(framesCreator->remainingBytesForCurrentFrame(), (quint16) 1024);
+  QCOMPARE(framesCreator->remainingBytesForCurrentFrame(), (quint64) 1024);
   data.append("1234567890");
-  QCOMPARE(framesCreator->remainingBytesForCurrentFrame(), (quint16) (1024-10) );
+  QCOMPARE(framesCreator->remainingBytesForCurrentFrame(), (quint64) (1024-10) );
   data.append("123456789012345");
-  QCOMPARE(framesCreator->remainingBytesForCurrentFrame(), (quint16) (1024-10-15) );
+  QCOMPARE(framesCreator->remainingBytesForCurrentFrame(), (quint64) (1024-10-15) );
 }
 
 void FramesCreatorTest::shouldWriteDataToFrame()
@@ -84,7 +84,7 @@ void FramesCreatorTest::shouldEmitProcessedFrameSignalWhenNoMoreBytesAreRemainin
   framesCreator->addFramesData(QByteArray("12345"));
   QCOMPARE(spy.count(), 0);
   framesCreator->addFramesData(QByteArray("12345"));
-  QCOMPARE(framesCreator->remainingBytesForCurrentFrame(), (quint16)0);
+  QCOMPARE(framesCreator->remainingBytesForCurrentFrame(), (quint64)0);
   QCOMPARE(spy.count(), 1);
 }
 

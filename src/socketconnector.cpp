@@ -20,7 +20,6 @@
 
 #include "socketconnector.h"
 
-
 SocketConnector::SocketConnector(SocketInterface *socket, FramesDataExtractor *framesdataextractor , QObject* parent): QObject(parent)
 {
   this->socket=socket;
@@ -30,6 +29,7 @@ SocketConnector::SocketConnector(SocketInterface *socket, FramesDataExtractor *f
 
 void SocketConnector::openConnection()
 {
+  qDebug() << "Opening connection..";
   socket->connectToHost("localhost", 8080);
 }
 
@@ -40,5 +40,6 @@ void SocketConnector::gotData()
   if(data.size()>0)
     framesdataextractor->gotFramesData(data);
 }
+
 
 #include "socketconnector.moc"

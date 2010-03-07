@@ -53,7 +53,7 @@ class MockFramesFactory : public FramesFactory {
 class MockFrame : public Frame {
   public:
     MockFrame() : Frame(0, 0, 0) {};
-    MOCK_METHOD0(totalbytes, quint32());
+    MOCK_METHOD0(totalbytes, quint64());
     MOCK_METHOD0(frameData, QByteArray*());
 };
 #endif // FRAMESCREATORTEST_H

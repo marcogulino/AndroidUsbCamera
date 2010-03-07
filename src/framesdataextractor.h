@@ -32,7 +32,7 @@ class FramesDataExtractor : public QObject
     virtual void gotFramesData(QByteArray data);
   private:
     FramesCreator *framesCreator;
-    quint16 createNewFrame(QByteArray *data);
+    quint64 createNewFrame(QByteArray *data);
 };
 
 #endif // FRAMESDATAEXTRACTOR_H

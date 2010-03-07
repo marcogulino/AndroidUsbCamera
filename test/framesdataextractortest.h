@@ -45,7 +45,7 @@ class FramesDataExtractorTest : public QObject
 class MockFramesCreator : public FramesCreator {
   public:
     MockFramesCreator() : FramesCreator(NULL) {};
-    MOCK_METHOD0(remainingBytesForCurrentFrame, quint16());
+    MOCK_METHOD0(remainingBytesForCurrentFrame, quint64());
     MOCK_METHOD1(addFramesData, void(const QByteArray &));
     MOCK_METHOD1(createNewFrame, void(const QByteArray&));
 };

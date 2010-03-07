@@ -30,7 +30,7 @@ class Frame : public QObject
   public:
     Frame(quint16 width, quint16 height, quint16 bitsPerPixel, QObject *parent=0);
     ~Frame();
-    virtual quint32 totalbytes();
+    virtual quint64 totalbytes();
     virtual quint16 width();
     virtual quint16 height();
     virtual QByteArray *frameData();

@@ -26,7 +26,7 @@ GQTEST_MAIN(FramesFactoryTest)
 void FramesFactoryTest::frameTotalBytesCalculationTest()
 {
   Frame frame(640, 480, 12);
-  QCOMPARE(frame.totalbytes(), (quint32)460800);
+  QCOMPARE(frame.totalbytes(), (quint64)460800);
 }
 
 
@@ -36,7 +36,7 @@ void FramesFactoryTest::shouldCreate320x240NV12Frame()
   Frame *createdFrame = factory.create(QByteArray::fromHex("F0000000"));
   QCOMPARE(createdFrame->width(), (quint16)320);
   QCOMPARE(createdFrame->height(), (quint16)240);
-  QCOMPARE(createdFrame->totalbytes(), (quint32)115200); 
+  QCOMPARE(createdFrame->totalbytes(), (quint64)115200); 
 }
 
 void FramesFactoryTest::shouldCreate160x120NV12Frame()
@@ -45,7 +45,7 @@ void FramesFactoryTest::shouldCreate160x120NV12Frame()
   Frame *createdFrame = factory.create(QByteArray::fromHex("F8000000"));
   QCOMPARE(createdFrame->width(), (quint16)160);
   QCOMPARE(createdFrame->height(), (quint16)120);
-  QCOMPARE(createdFrame->totalbytes(), (quint32)28800); 
+  QCOMPARE(createdFrame->totalbytes(), (quint64)28800); 
 }
 
 void FramesFactoryTest::shouldReturnNullForInvalidHeader()

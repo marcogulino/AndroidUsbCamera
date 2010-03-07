@@ -39,7 +39,7 @@ void FramesCreator::createNewFrame ( const QByteArray& header )
   currentFrame=framesFactory->create(header);
 }
 
-quint16 FramesCreator::remainingBytesForCurrentFrame()
+quint64 FramesCreator::remainingBytesForCurrentFrame()
 {
   if(! currentFrame) return 0;
   return currentFrame->totalbytes() - currentFrame->frameData()->size();

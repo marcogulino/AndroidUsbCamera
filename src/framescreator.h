@@ -32,7 +32,7 @@ class FramesCreator : public QObject
   Q_OBJECT
   public:
     FramesCreator(FramesFactory *framesFactory, QObject *parent=0);
-    virtual quint16 remainingBytesForCurrentFrame();
+    virtual quint64 remainingBytesForCurrentFrame();
     virtual void addFramesData(const QByteArray &data);
     virtual void createNewFrame(const QByteArray &header);
   private:
