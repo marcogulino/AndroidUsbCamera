@@ -124,7 +124,9 @@ void FramesConverter::reportError(const char* errorPrefix)
 #warning If you are happy with that...
 void FramesConverter::gotFrame(Frame* frame)
 {
-
+  QTextStream out(stdout);
+  out << "Got frame, but can't write it nowhere\n";
+  out << "Next time, try me on GNU/Linux :-)\n";
 }
 void FramesConverter::reportError(const char* errorPrefix)
 {
