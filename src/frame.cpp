@@ -47,9 +47,9 @@ QByteArray* Frame::frameData()
   return &(d->frameData);
 }
 
-quint16 Frame::totalbytes()
+quint32 Frame::totalbytes()
 {
-
+  return (d->bitsPerPixel * d->width * d->height) / 8;
 }
 
 quint16 Frame::height()

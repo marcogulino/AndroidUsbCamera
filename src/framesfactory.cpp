@@ -19,6 +19,41 @@
 */
 
 #include "framesfactory.h"
+#include <QDebug>
+class FrameInitializationData {
+  public:
+    FrameInitializationData(quint16 width, quint16 height, quint16 bitsPerPixel) {
+      this->width=width;
+      this->height=height;
+      this->bitsPerPixel=bitsPerPixel;
+    }
+    quint16 width;
+    quint16 height;
+    quint16 bitsPerPixel;
+};
+
+FramesFactory::FramesFactory(QObject* parent): QObject(parent)
+{
+  frameInitializationDataMap.insert(QByteArray::fromHex("F0000000"), new FrameInitializationData(320, 240, 12));
+  frameInitializationDataMap.insert(QByteArray::fromHex("F8000000"), new FrameInitializationData(160, 120, 12));
+}
+
+FramesFactory::~FramesFactory()
+{
+  foreach(QByteArray header, frameInitializationDataMap.keys()) {
+    delete (frameInitializationDataMap.take(header));
+  }
+}
+
+
+Frame* FramesFactory::create(const QByteArray& headerData)
+{
+  FrameInitializationData *frameInitializationData = frameInitializationDataMap.value(headerData);
+  return frameInitializationData 
+    ? new Frame(frameInitializationData->width, frameInitializationData->height, frameInitializationData->bitsPerPixel)
+    : NULL;
+}
+
 
 #include "framesfactory.moc"
 

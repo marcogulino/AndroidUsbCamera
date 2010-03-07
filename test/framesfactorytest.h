@@ -18,22 +18,20 @@
 
 */
 
-#ifndef FRAMESFACTORY_H
-#define FRAMESFACTORY_H
+#ifndef FRAMESFACTORYTEST_H
+#define FRAMESFACTORYTEST_H
 
-#include <QObject>
-#include "frame.h"
-#include <QMap>
-class FrameInitializationData;
-class FramesFactory : public QObject
+#include <qt4/QtCore/QObject>
+#include "android_usb_camera_test_base.h"
+
+class FramesFactoryTest : public QObject
 {
   Q_OBJECT
-  public:
-    FramesFactory(QObject* parent = 0);
-    ~FramesFactory();
-    virtual Frame *create(const QByteArray &headerData);
-  private:
-    QMap<QByteArray, FrameInitializationData*> frameInitializationDataMap;
+  private slots:
+    void frameTotalBytesCalculationTest();
+    void shouldCreate320x240NV12Frame();
+    void shouldCreate160x120NV12Frame();
+    void shouldReturnNullForInvalidHeader();
 };
 
-#endif // FRAMESFACTORY_H
+#endif // FRAMESFACTORYTEST_H
