@@ -68,12 +68,15 @@ void FramesConverter::run()
   QThread::run();
 }
 
+#define V4L_DEST_FORMAT VIDEO_PALETTE_YUV420P
+#define LIBAV_DEST_FORMAT PIX_FMT_YUVJ420P
+
 void FramesConverter::gotFrame(Frame* frame)
 {
   int dev=videodev->handle();
   if(ioctl(dev, VIDIOCGCAP, &(videoConversionData->vid_caps ))==-1) reportError("error on VIDIOCGCAP: ");
   if(ioctl(dev, VIDIOCGPICT, &(videoConversionData->vid_pic))==-1) reportError("error on VIDIOCGPICT: ");
-  (videoConversionData->vid_pic).palette=VIDEO_PALETTE_RGB24;
+  (videoConversionData->vid_pic).palette=V4L_DEST_FORMAT;
 
   if(ioctl(dev, VIDIOCSPICT, &(videoConversionData->vid_pic))==-1) reportError("error on VIDIOCSPICT: ");
   if(ioctl(dev, VIDIOCGWIN, &(videoConversionData->vid_win)) == -1) reportError("error on VIDIOCGWIN: ");
@@ -81,7 +84,7 @@ void FramesConverter::gotFrame(Frame* frame)
   videoConversionData->vid_win.height=frame->height();
   if(ioctl(dev, VIDIOCSWIN, &(videoConversionData->vid_win)) == -1) reportError("error on VIDIOCSWIN: ");
   
-  int destdata_size = avpicture_get_size(PIX_FMT_RGB24, frame->width(), frame->height());
+  int destdata_size = avpicture_get_size(LIBAV_DEST_FORMAT, frame->width(), frame->height());
   uint8_t *dest_data = new uint8_t[destdata_size];
 //   uint8_t *src_data = new uint8_t[frame->totalbytes()];
   
@@ -92,8 +95,8 @@ void FramesConverter::gotFrame(Frame* frame)
 
   if(img_convert_ctx == NULL) {       
       img_convert_ctx = sws_getContext(frame->width(), frame->height(), 
-                      PIX_FMT_NV12, 
-                      frame->width(), frame->height(), PIX_FMT_RGB24, SWS_BICUBIC,
+                      PIX_FMT_NV21, 
+                      frame->width(), frame->height(), LIBAV_DEST_FORMAT, SWS_BICUBIC,
                       NULL, NULL, NULL);
       if(img_convert_ctx == NULL) {
           qDebug()<< "Cannot initialize the conversion context!";
@@ -103,7 +106,7 @@ void FramesConverter::gotFrame(Frame* frame)
   pFrameRGB=avcodec_alloc_frame();
   pFrameNV21=avcodec_alloc_frame();
   avpicture_fill((AVPicture *)pFrameNV21,  (uint8_t*) frame->frameData()->data(), PIX_FMT_NV21, frame->width(), frame->height());
-  avpicture_fill((AVPicture *)pFrameRGB, dest_data, PIX_FMT_RGB24, frame->width(), frame->height());
+  avpicture_fill((AVPicture *)pFrameRGB, dest_data, LIBAV_DEST_FORMAT, frame->width(), frame->height());
   int ret = sws_scale(img_convert_ctx, pFrameNV21->data, pFrameNV21->linesize, 0, frame->height(), pFrameRGB->data, pFrameRGB->linesize);
   int could_write = videodev->write((char*)dest_data, destdata_size );
 
